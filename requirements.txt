@@ -1,0 +1,39 @@
+# Python 3.10+ recommended
+
+# UI
+streamlit
+
+# YouTube / audio handling
+yt-dlp
+pydub
+
+# Local speech-to-text (Whisper)
+openai-whisper
+torch
+torchaudio
+
+# Hindi -> English translation
+transformers
+sentencepiece
+accelerate
+
+# LangChain + Mistral API
+langchain
+langchain-core
+langchain-community
+langchain-text-splitters
+langchain-mistralai
+langchain_openai
+
+# RAG: ChromaDB + Hugging Face embeddings
+chromadb
+langchain-chroma
+sentence-transformers
+langchain-huggingface
+
+# Environment variables / API keys
+python-dotenv
+requests
+
+# PDF export
+reportlab
