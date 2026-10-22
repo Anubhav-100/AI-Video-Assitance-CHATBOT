@@ -3,6 +3,8 @@ import requests
 import whisper
 from dotenv import load_dotenv
 
+from schemas.audio import TranscribeRequest
+
 load_dotenv()
 
 
@@ -130,13 +132,9 @@ def transcribe_all(chunks: list[str], engine: str) -> str:
         Complete transcript as a single string.
     """
 
-    engine = engine.lower().strip()
-
-    if engine not in {"whisper", "sarvam"}:
-        raise ValueError("Invalid engine. Choose 'whisper' or 'sarvam'.")
-
-    if not chunks:
-        raise ValueError("No audio chunks provided. Check process_input().")
+    validated = TranscribeRequest(chunks=chunks, engine=engine)
+    chunks = validated.chunks
+    engine = validated.engine
 
     engine_name = ("Whisper" if engine == "whisper" else "Sarvam AI")
     print(f"Using {engine_name} for transcription.")

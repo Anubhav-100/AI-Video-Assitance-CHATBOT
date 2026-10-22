@@ -1,39 +1,42 @@
 # Python 3.10+ recommended
 
+# Data Validation & Schemas
+pydantic>=2.0.0
+
 # UI
 streamlit
 
-# YouTube / audio handling
+# YouTube / Audio Processing
 yt-dlp
 pydub
 
-# Local speech-to-text (Whisper)
+# Speech-to-Text (Whisper & Cloud STT)
 openai-whisper
 torch
 torchaudio
 
-# Hindi -> English translation
+# Translation & Language Models
 transformers
 sentencepiece
 accelerate
 
-# LangChain + Mistral API
+# LangChain Ecosystem & LLM Providers
 langchain
 langchain-core
 langchain-community
 langchain-text-splitters
 langchain-mistralai
-langchain_openai
+langchain-openai
 
-# RAG: ChromaDB + Hugging Face embeddings
+# RAG: Vector Store & Embeddings
 chromadb
 langchain-chroma
 sentence-transformers
 langchain-huggingface
 
-# Environment variables / API keys
+# Environment & Network
 python-dotenv
 requests
 
-# PDF export
+# Export
 reportlab

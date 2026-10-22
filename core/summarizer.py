@@ -2,6 +2,8 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+from schemas.analysis import SummarizeRequest
+
 
 # Split Transcript
 # ---------------------------------------------------------------------------------------------------------------------------------
@@ -68,6 +70,7 @@ def combine_summaries(summaries: list[str], llm) -> str:
 
 def summarize_transcript(transcript: str, llm) -> str:
     """Generate a meeting summary using map-reduce."""
+    transcript = SummarizeRequest(transcript=transcript).transcript
 
     chunks = split_transcript(transcript)
 
@@ -87,6 +90,7 @@ def summarize_transcript(transcript: str, llm) -> str:
 
 def generate_title(transcript: str, llm) -> str:
     """Generate a professional meeting title of at most eight words."""
+    transcript = SummarizeRequest(transcript=transcript).transcript
 
     title_prompt = ChatPromptTemplate.from_messages([
         (

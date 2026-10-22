@@ -2,6 +2,7 @@ import yt_dlp
 import os
 from typing import Any
 
+from schemas.audio import AudioProcessRequest
 from pydub import AudioSegment as _AudioSegment  # type: ignore[reportMissingTypeStubs]
 
 AudioSegment: Any = _AudioSegment
@@ -96,6 +97,10 @@ def process_input(Source: str, engine: str) -> list[str]:
     Returns:
         list[str]: A list of paths to the processed audio files.
     """
+    validated = AudioProcessRequest(source=Source, engine=engine)
+    Source = validated.source
+    engine = validated.engine
+
     if Source.startswith("http://") or Source.startswith("https://"):
         print(f"Downloading audio from video URL: {Source}")
         wav_path = download_youtube_audio(Source)

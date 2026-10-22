@@ -48,8 +48,27 @@ store = load_vector_store()
 print(answer_question(store, "What deadline did the team agree to?"))
 ```
 
+## Run the Application
+
+### 1. Web Interface (Streamlit)
+Launch the modern web UI:
+
+```powershell
+streamlit run app.py
+```
+
+### 2. Command-Line Interface (CLI)
+Run the pipeline directly from your terminal:
+
+```powershell
+python main.py
+```
+
+## Testing
+
 Run the offline checks with:
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
+

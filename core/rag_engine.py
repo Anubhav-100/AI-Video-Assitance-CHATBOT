@@ -13,6 +13,7 @@ from core.vector_store import (
     load_vector_store,
     get_retriever,
 )
+from schemas.rag import IndexTranscriptRequest, QueryRequest
 
     
     
@@ -88,8 +89,16 @@ def create_rag_chain(retriever: Any, llm):
 def build_rag_chain(llm, transcript: str, video_id: str, video_title: str, session_id: str, selected_video_id: str | None = None):
     """Index a video's transcript and create a session-aware RAG chain."""
 
-    if not transcript or not transcript.strip():
-        raise ValueError("The meeting transcript cannot be empty.")
+    req = IndexTranscriptRequest(
+        transcript=transcript,
+        video_id=video_id,
+        video_title=video_title,
+        session_id=session_id,
+    )
+    transcript = req.transcript
+    video_id = req.video_id
+    video_title = req.video_title
+    session_id = req.session_id
 
     vector_store = build_vector_store(
         transcript=transcript,
@@ -132,7 +141,5 @@ def load_rag_chain(llm, session_id: str, selected_video_id: str | None = None):
 def ask_question(rag_chain, question: str) -> str:
     """Ask a question and return the generated answer."""
 
-    if not question or not question.strip():
-        raise ValueError("The question cannot be empty.")
-
-    return rag_chain.invoke(question.strip())
+    query = QueryRequest(question=question)
+    return rag_chain.invoke(query.question)

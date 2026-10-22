@@ -4,6 +4,8 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 
+from schemas.rag import IndexTranscriptRequest
+
 # Configuration for Vector Store
 # ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -26,17 +28,16 @@ def get_embeddings():
 def build_vector_store(transcript: str, video_id: str, video_title: str, session_id: str) -> Chroma:
     """Add a video's transcript chunks to the shared Chroma database."""
 
-    if not transcript or not transcript.strip():
-        raise ValueError("Transcript cannot be empty.")
-
-    if not video_id or not video_id.strip():
-        raise ValueError("Video ID cannot be empty.")
-
-    if not video_title or not video_title.strip():
-        raise ValueError("Video title cannot be empty.")
-
-    if not session_id or not session_id.strip():
-        raise ValueError("Session ID cannot be empty.")
+    req = IndexTranscriptRequest(
+        transcript=transcript,
+        video_id=video_id,
+        video_title=video_title,
+        session_id=session_id,
+    )
+    transcript = req.transcript
+    video_id = req.video_id
+    video_title = req.video_title
+    session_id = req.session_id
 
     print(f"Indexing video: {video_title}")
 

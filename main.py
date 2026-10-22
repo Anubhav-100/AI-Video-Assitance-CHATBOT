@@ -16,6 +16,8 @@ from core.summarizer import summarize_transcript, generate_title
 from core.extractor import extract_action_items, extract_key_decisions, extract_questions
 from core.rag_engine import build_rag_chain, ask_question
 from utils.llm import get_llm
+from schemas.pipeline import PipelineInput
+from schemas.analysis import MeetingAnalysisResult
 
 
 def run_pipeline(source: str, engine: str = "whisper") -> dict:
@@ -24,6 +26,9 @@ def run_pipeline(source: str, engine: str = "whisper") -> dict:
 
     Returns a dict with all results and the rag_chain for Q&A.
     """
+    pipeline_input = PipelineInput(source=source, engine=engine)
+    source = pipeline_input.source
+    engine = pipeline_input.engine
 
     # 1. Process audio
     print(f"\n[1/6] Processing audio from: {source}")
@@ -80,13 +85,20 @@ def run_pipeline(source: str, engine: str = "whisper") -> dict:
     print(f"\n--- Open Questions ---\n{open_questions}")
     print()
 
+    analysis = MeetingAnalysisResult(
+        title=title,
+        transcript=transcript,
+        summary=summary,
+        action_items=action_items,
+        key_decisions=key_decisions,
+        open_questions=open_questions,
+        video_id=video_id,
+        session_id=session_id,
+    )
+    analysis_data = analysis.model_dump() if hasattr(analysis, "model_dump") else analysis.dict()
+
     return {
-        "title": title,
-        "transcript": transcript,
-        "summary": summary,
-        "action_items": action_items,
-        "key_decisions": key_decisions,
-        "open_questions": open_questions,
+        **analysis_data,
         "rag_chain": rag_chain,
     }
 
