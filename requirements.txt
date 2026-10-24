@@ -3,8 +3,12 @@
 # Data Validation & Schemas
 pydantic>=2.0.0
 
-# UI
+# UI & API
 streamlit
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+httpx>=0.27.0
+pytest>=8.0.0
 
 # YouTube / Audio Processing
 yt-dlp
