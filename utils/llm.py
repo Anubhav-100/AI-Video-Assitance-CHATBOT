@@ -1,7 +1,7 @@
 import os
 from typing import Any
 from langchain_mistralai import ChatMistralAI
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,8 +13,18 @@ def get_llm(model: str | None = None, temperature: float = 0.0, **kwargs: Any) -
     Defaults to Mistral AI (using MISTRAL_API_KEY) and falls back to OpenAI (using OPENAI_API_KEY).
     """
     mistral_api_key = (os.getenv("MISTRAL_API_KEY") or "").strip()
-    openai_api_key = (os.getenv("OPENAI_API_KEY") or "").strip()
+    groq_api_key = (os.getenv("GROQ_API_KEY") or "").strip()
 
+    if groq_api_key:
+
+        chosen_model = model or os.getenv("GROQ_MODEL", "openai/gpt-oss-120b").strip()
+        return ChatGroq(
+            model=chosen_model,
+            api_key=groq_api_key,
+            temperature=temperature,
+            **kwargs,
+        )
+    
     if mistral_api_key:
         
         chosen_model = model or os.getenv("MISTRAL_MODEL", "mistral-large-latest").strip()
@@ -25,16 +35,4 @@ def get_llm(model: str | None = None, temperature: float = 0.0, **kwargs: Any) -
             **kwargs,
         )
 
-    if openai_api_key:
-
-        chosen_model = model or os.getenv("OPENAI_MODEL", "gpt-4o-mini").strip()
-        return ChatOpenAI(
-            model=chosen_model,
-            api_key=openai_api_key,
-            temperature=temperature,
-            **kwargs,
-        )
-
-    raise ValueError(
-        "Neither MISTRAL_API_KEY nor OPENAI_API_KEY is configured in your environment or .env file."
-    )
+    raise ValueError("Neither MISTRAL_API_KEY nor OPENAI_API_KEY is configured in your environment or .env file.")
