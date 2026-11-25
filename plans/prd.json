@@ -47,7 +47,7 @@
       "id": "frontend-docker",
       "title": "Create frontend Dockerfile and .dockerignore",
       "description": "Create frontend/.dockerignore and frontend/Dockerfile using Python 3.11, frontend/requirements.txt, and Streamlit on 0.0.0.0:8501, and verify image build.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "docker-compose",

@@ -9,3 +9,5 @@ Initial state: 15 existing tests in tests/test_api.py. SQLAlchemy 2.1.6 installe
 - [docs-and-e2e-verify] Updated README.md with SQLite + SQLAlchemy architecture, DB path, dependencies, env vars, new /api/v1/history endpoints, and updated run commands. Verified live FastAPI restart persistence (SQLite CRUD + ChromaDB RAG query returning 200) and Streamlit startup health check.
 
 - [backend-docker] Fixed backend/requirements.txt (commented out invalid `Python>=3.11.9` line, added `fastapi`, `uvicorn`, `langchain-groq`), created backend/.dockerignore (excluding .env, .venv, downloads, data, vector_db, __pycache__) and backend/Dockerfile (python:3.11-slim, ffmpeg, uvicorn on 0.0.0.0:${PORT:-8000}). Built ai-video-assistant-backend:latest successfully. Note: on Windows, Docker Desktop must be kept alive inside the same run_command when running docker commands.
+
+- [frontend-docker] Created frontend/.dockerignore (excluding .venv, .env, __pycache__, etc.) and frontend/Dockerfile (python:3.11-slim, frontend/requirements.txt, AI_VIDEO_API_URL=http://backend:8000/api/v1, streamlit on 0.0.0.0:8501). Built ai-video-assistant-frontend:latest successfully.
