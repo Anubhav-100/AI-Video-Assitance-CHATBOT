@@ -29,7 +29,7 @@
       "id": "tests",
       "title": "Automated tests for history CRUD, pipeline auto-save, and RAG restart persistence",
       "description": "Add pytest tests using temporary SQLite DB and ChromaDB to verify CRUD, newest-first ordering, pipeline auto-save/no-save-on-error, and RAG query after simulated restart.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "docs-and-e2e-verify",
