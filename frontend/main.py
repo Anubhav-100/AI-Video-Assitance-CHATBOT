@@ -1,4 +1,5 @@
 from __future__ import annotations
+from ui.about_page import render_about_page
 
 import tempfile
 from pathlib import Path
@@ -47,7 +48,6 @@ def init_state() -> None:
         "analysis_results": None,
         "session_id": None,
         "chat_history": [],
-        "analysis_history": [],
         "source_mode": "Video URL",
         "engine": "whisper",
         "dark_mode": True,
@@ -142,19 +142,6 @@ def execute_analysis(source: str, engine: str, uploaded_file: Optional[Any] = No
             st.session_state.analysis_results = results
             st.session_state.session_id = session_id
             st.session_state.chat_history = []
-
-            # Save analysis history
-            st.session_state.analysis_history.insert(
-                0,
-                {
-                    "results": results,
-                    "session_id": session_id,
-                }
-            )
-
-            st.session_state.analysis_history = (
-                st.session_state.analysis_history[:10]
-            )
 
             status.update(label="Analysis completed successfully", state="complete", expanded=False)
 
@@ -324,39 +311,45 @@ def render_dashboard() -> None:
             else:
                 render_empty_state()
 
-            # Summary / actions / decisions
-            summary_col, actions_col, decisions_col = st.columns([1.05, 1.05, 1.05], gap="small")
-            with summary_col:
-                render_summary_card(results.get("summary") if results else None)
-            with actions_col:
-                render_list_card(
-                    "Action Items",
-                    results.get("action_items") if results else None,
-                    "green",
-                    "✓",
-                    "Extracted tasks will appear here.",
-                )
-            with decisions_col:
-                render_list_card(
-                    "Key Decisions",
-                    results.get("key_decisions") if results else None,
-                    "orange",
-                    "◆",
-                    "Important decisions will appear here.",
-                )
+        # Row 1: Summary
+        with st.container():
+            render_summary_card(results.get("summary") if results else None)
+        
+        st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
 
-            st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
-            q_col, t_col = st.columns([1.0, 1.55], gap="small")
-            with q_col:
-                render_list_card(
-                    "Open Questions",
-                    results.get("open_questions") if results else None,
-                    "purple",
-                    "?",
-                    "Unanswered questions will appear here.",
-                )
-            with t_col:
-                render_transcript_card(str(results.get("transcript") or "") if results else "")
+        # Row 2: Action Items and Key Decisions
+        actions_col, decisions_col = st.columns(2, gap="small")
+
+        with actions_col:
+            render_list_card(
+                "Action Items",
+                results.get("action_items") if results else None,
+                "green",
+                "✓",
+                "Extracted tasks will appear here.",
+            )
+
+        with decisions_col:
+            render_list_card(
+                "Key Decisions",
+                results.get("key_decisions") if results else None,
+                "orange",
+                "◆",
+                "Important decisions will appear here.",
+            )
+
+        st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+        q_col, t_col = st.columns(2, gap="small")
+        with q_col:
+            render_list_card(
+                "Open Questions",
+                results.get("open_questions") if results else None,
+                "purple",
+                "?",
+                "Unanswered questions will appear here.",
+            )
+        with t_col:
+            render_transcript_card(str(results.get("transcript") or "") if results else "")
 
         st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
         render_timeline(completed=bool(st.session_state.analysis_results))
@@ -396,26 +389,88 @@ def render_dashboard() -> None:
                 submit_chat_question(prompt)
                 st.rerun()
 
+def _format_history_date(raw_dt: Optional[str]) -> str:
+    """Format an ISO-8601 timestamp string for display."""
+    if not raw_dt:
+        return "Unknown date"
+    try:
+        from datetime import datetime
+        dt = datetime.fromisoformat(raw_dt.replace("Z", "+00:00"))
+        return dt.strftime("%Y-%m-%d %H:%M")
+    except Exception:
+        return str(raw_dt)
+
+
 def render_history_page() -> None:
     render_topbar()
     st.markdown("## Analysis History")
-    st.caption("Recent analyses are kept in this browser session. Add persistent storage later if you need history across sessions.")
-    history = st.session_state.analysis_history
-    if not history:
-        st.info("No analyses in this session yet. Start a new analysis from the Dashboard.")
+    st.caption("Saved analyses are stored permanently in SQLite and remain available across restarts.")
+
+    try:
+        from api_client import (
+            list_analysis_history,
+            get_analysis_history,
+            delete_analysis_history,
+        )
+    except Exception as exc:
+        st.error(f"API Client Import Error: {type(exc).__name__}: {exc}")
         return
+
+    try:
+        history = list_analysis_history()
+    except Exception as exc:
+        st.error(f"Could not load analysis history from backend: {exc}")
+        return
+
+    if not history:
+        st.info("No saved analyses yet. Start a new analysis from the Dashboard.")
+        return
+
     for idx, item in enumerate(history):
-        data = item.get("results", {})
-        title = data.get("title") or f"Analysis {idx + 1}"
+        analysis_id = item.get("id")
+        title = item.get("title") or f"Analysis {idx + 1}"
+        created_at = _format_history_date(item.get("created_at"))
+        source = item.get("source") or "N/A"
+        engine = item.get("engine") or "N/A"
+        summary = (item.get("summary") or "").strip()
+        summary_preview = f"{summary[:220]}..." if len(summary) > 220 else summary
+
         with st.container(border=True):
             st.markdown(f"**{title}**")
-            st.caption(f"Video ID: {data.get('video_id', 'N/A')} · Session: {data.get('session_id', 'N/A')}")
-            if st.button("Open this analysis", key=f"open_history_{idx}"):
-                st.session_state.analysis_results = data
-                st.session_state.session_id = item.get("session_id")
-                st.session_state.chat_history = []
-                st.session_state.navigation = "Dashboard"
-                st.rerun()
+            st.caption(f"Date: {created_at} · Engine: {engine} · Source: {source}")
+            if summary_preview:
+                st.write(summary_preview)
+
+            col_open, col_delete, _ = st.columns([1, 1, 4])
+            with col_open:
+                if st.button("Open Analysis", key=f"open_history_{analysis_id}"):
+                    try:
+                        detail = get_analysis_history(analysis_id)
+                        st.session_state.analysis_results = {
+                            "title": detail.get("title", ""),
+                            "transcript": detail.get("transcript", ""),
+                            "summary": detail.get("summary", ""),
+                            "action_items": detail.get("action_items", ""),
+                            "key_decisions": detail.get("key_decisions", ""),
+                            "open_questions": detail.get("open_questions", ""),
+                            "video_id": detail.get("video_id"),
+                            "source": detail.get("source", ""),
+                            "engine": detail.get("engine", ""),
+                        }
+                        st.session_state.session_id = detail.get("session_id")
+                        st.session_state.chat_history = []
+                        st.session_state.navigation = "Dashboard"
+                        st.rerun()
+                    except Exception as exc:
+                        st.error(f"Failed to open analysis: {exc}")
+            with col_delete:
+                if st.button("Delete", key=f"delete_history_{analysis_id}"):
+                    try:
+                        delete_analysis_history(analysis_id)
+                        st.toast("Analysis deleted.", icon="🗑️")
+                        st.rerun()
+                    except Exception as exc:
+                        st.error(f"Failed to delete analysis: {exc}")
 
 def render_settings_page() -> None:
     render_topbar()
@@ -423,12 +478,6 @@ def render_settings_page() -> None:
     st.caption("Basic interface preferences. Backend engine credentials remain in your existing environment configuration.")
     st.selectbox("Default transcription engine", ["Whisper", "Sarvam"], key="default_engine_setting")
     st.info("Supported media extensions are configured in MEDIA_TYPES near the top of app.py. Match this list to core.audio_processor.py.")
-
-def render_about_page() -> None:
-    render_topbar()
-    st.markdown("## About AI Video Assistant")
-    st.write("Transform video and audio into searchable knowledge with transcription, summarization, structured extraction, and RAG-powered question answering.")
-    st.write("This Streamlit interface is designed to reuse your existing Python pipeline rather than duplicate its AI logic.")
 
 # ---------------------------------------------------------------------------
 # Main entry point

@@ -23,7 +23,7 @@
       "id": "frontend-history",
       "title": "Frontend API client and History page integration",
       "description": "Add history functions to frontend/api_client.py, remove st.session_state.analysis_history as permanent store, fetch history from FastAPI on History page, display metadata + summary preview, and support Open Analysis and Delete.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "tests",
