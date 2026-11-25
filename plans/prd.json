@@ -1,0 +1,41 @@
+{
+  "project": "AI Video Assistant - Permanent History & RAG Persistence",
+  "stories": [
+    {
+      "id": "db-persistence",
+      "title": "SQLite persistence layer with SQLAlchemy",
+      "description": "Create SQLAlchemy database engine, session management, AnalysisHistory ORM model, automatic table initialization, and persistent storage in backend/data/history.db.",
+      "passes": true
+    },
+    {
+      "id": "history-api",
+      "title": "FastAPI history endpoints and pipeline auto-save",
+      "description": "Add /api/v1/history POST, GET list (newest first), GET by id, and DELETE by id endpoints; auto-save successful /api/v1/pipeline results without saving failures.",
+      "passes": false
+    },
+    {
+      "id": "rag-persistence",
+      "title": "RAG persistence across FastAPI restarts",
+      "description": "Ensure ChromaDB path is consistent, detect existing session vectors in ChromaDB, and reconstruct RAG chains via load_rag_chain without unnecessary re-embedding when rag_sessions is empty after restart.",
+      "passes": false
+    },
+    {
+      "id": "frontend-history",
+      "title": "Frontend API client and History page integration",
+      "description": "Add history functions to frontend/api_client.py, remove st.session_state.analysis_history as permanent store, fetch history from FastAPI on History page, display metadata + summary preview, and support Open Analysis and Delete.",
+      "passes": false
+    },
+    {
+      "id": "tests",
+      "title": "Automated tests for history CRUD, pipeline auto-save, and RAG restart persistence",
+      "description": "Add pytest tests using temporary SQLite DB and ChromaDB to verify CRUD, newest-first ordering, pipeline auto-save/no-save-on-error, and RAG query after simulated restart.",
+      "passes": false
+    },
+    {
+      "id": "docs-and-e2e-verify",
+      "title": "Update README and verify FastAPI + Streamlit restart persistence",
+      "description": "Document database architecture, location, dependencies, and new endpoints in README.md, and verify FastAPI + Streamlit persistence across restarts.",
+      "passes": false
+    }
+  ]
+}

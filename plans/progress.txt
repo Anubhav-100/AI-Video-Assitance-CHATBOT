@@ -1,0 +1,4 @@
+# Ralph Loop Progress Log
+
+Initial state: 15 existing tests in tests/test_api.py. SQLAlchemy 2.1.6 installed in .venv.
+- [db-persistence] Created backend/db/{__init__.py,database.py,models.py,repository.py} with SQLAlchemy 2.x ORM model AnalysisHistory, auto table creation via init_db(), and default persistent DB at backend/data/history.db. Added sqlalchemy>=2.0.0 to requirements.txt. Note: on Windows, call engine.dispose() in test teardown before removing temp SQLite files.
