@@ -2,3 +2,4 @@
 
 Initial state: 15 existing tests in tests/test_api.py. SQLAlchemy 2.1.6 installed in .venv.
 - [db-persistence] Created backend/db/{__init__.py,database.py,models.py,repository.py} with SQLAlchemy 2.x ORM model AnalysisHistory, auto table creation via init_db(), and default persistent DB at backend/data/history.db. Added sqlalchemy>=2.0.0 to requirements.txt. Note: on Windows, call engine.dispose() in test teardown before removing temp SQLite files.
+- [history-api] Added backend/schemas/history.py and backend/api/routes/history.py (POST, GET list, GET /{id}, DELETE /{id} under /api/v1/history). Registered router and init_db() in backend/api/app.py. Updated backend/api/routes/pipeline.py to auto-save successful pipeline runs to SQLite without saving failures.

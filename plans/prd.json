@@ -11,7 +11,7 @@
       "id": "history-api",
       "title": "FastAPI history endpoints and pipeline auto-save",
       "description": "Add /api/v1/history POST, GET list (newest first), GET by id, and DELETE by id endpoints; auto-save successful /api/v1/pipeline results without saving failures.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "rag-persistence",
