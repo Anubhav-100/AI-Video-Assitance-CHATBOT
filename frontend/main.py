@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import streamlit as st
 
-from ui.about_page import render_about_page
+from ui.pages.about_page import render_about_page
 from ui.components import render_brand, render_sidebar_promo, render_topbar
-from ui.dashboard_page import render_dashboard
-from ui.history_page import render_history_page
+from ui.pages.dashboard_page import render_dashboard
+from ui.pages.history_page import render_history_page
 from ui.styles import load_css
 
 # ---------------------------------------------------------------------------

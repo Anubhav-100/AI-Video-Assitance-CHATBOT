@@ -12,7 +12,7 @@ BASE_URL = os.getenv("AI_VIDEO_API_URL", "http://localhost:8000/api/v1")
 TIMEOUT = 600
 
 # ---------------------------------------------------------------------------
-# Internal API helper
+# Internal API helpers
 # ---------------------------------------------------------------------------
 
 def _post(endpoint: str, payload: Dict[str, Any]) -> Dict[str, Any]:

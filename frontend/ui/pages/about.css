@@ -1,0 +1,287 @@
+/* About page only — loaded by ui/about_page.py */
+
+.about-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(2rem, 5vw, 4rem);
+    margin: 1.2rem 0 3rem;
+    border: 1px solid rgba(124, 108, 255, 0.20);
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at 88% 15%, rgba(124, 108, 255, 0.16), transparent 34%),
+        linear-gradient(135deg, rgba(124, 108, 255, 0.09), rgba(124, 108, 255, 0.025));
+}
+
+.about-eyebrow,
+.about-section-label {
+    display: inline-block;
+    color: #8275f5;
+    font-size: 0.70rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+}
+
+.about-hero h1 {
+    max-width: 780px;
+    margin: 1rem 0 0.8rem;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+    font-weight: 800;
+}
+
+.about-hero h1 span {
+    color: #8174f5;
+}
+
+.about-hero > p {
+    max-width: 680px;
+    margin: 0;
+    color: var(--text-color, inherit);
+    opacity: 0.76;
+    font-size: 1.02rem;
+    line-height: 1.8;
+}
+
+.about-section-heading {
+    margin: 2.6rem 0 1.15rem;
+}
+
+.about-section-heading h2 {
+    margin: 0.35rem 0 0.35rem;
+    font-size: clamp(1.45rem, 2.5vw, 1.9rem);
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+    font-weight: 750;
+}
+
+.about-section-heading > p,
+.about-copy {
+    max-width: 820px;
+    margin: 0;
+    opacity: 0.72;
+    line-height: 1.8;
+    font-size: 0.94rem;
+}
+
+.about-copy {
+    margin-bottom: 1.6rem;
+}
+
+.about-feature,
+.about-interface,
+.about-principle {
+    height: 100%;
+    min-height: 150px;
+    padding: 1.25rem;
+    border: 1px solid rgba(128, 128, 128, 0.19);
+    border-radius: 14px;
+    background: rgba(128, 128, 128, 0.045);
+    transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.about-feature:hover,
+.about-interface:hover,
+.about-principle:hover {
+    border-color: rgba(129, 116, 245, 0.48);
+    transform: translateY(-2px);
+}
+
+.about-card-number {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #8174f5;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.about-feature h3,
+.about-interface h3,
+.about-principle h3,
+.about-workflow-text h3,
+.about-architecture-row h3 {
+    margin: 0 0 0.45rem;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.about-feature p,
+.about-interface p,
+.about-principle p,
+.about-workflow-text p,
+.about-architecture-row p,
+.about-rag-step p {
+    margin: 0;
+    opacity: 0.70;
+    font-size: 0.86rem;
+    line-height: 1.7;
+}
+
+.about-workflow {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.16);
+}
+
+.about-workflow:last-of-type {
+    border-bottom: 0;
+}
+
+.about-workflow-number {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    color: #8174f5;
+    background: rgba(129, 116, 245, 0.12);
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.about-workflow-text {
+    padding-top: 0.1rem;
+}
+
+.about-rag-step {
+    height: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    border: 1px solid rgba(128, 128, 128, 0.18);
+    border-radius: 12px;
+    background: rgba(128, 128, 128, 0.045);
+}
+
+.about-rag-step h3 {
+    margin: 0 0 0.65rem;
+    color: #8174f5;
+    font-size: 0.92rem;
+    font-weight: 750;
+}
+
+.about-rag-step p {
+    font-size: 0.80rem;
+}
+
+.about-tech-row {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.8fr) minmax(0, 2fr);
+    gap: 1rem;
+    align-items: start;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.16);
+}
+
+.about-tech-row:last-child {
+    border-bottom: 0;
+}
+
+.about-tech-category {
+    padding-top: 0.28rem;
+    font-size: 0.87rem;
+    font-weight: 700;
+}
+
+.about-tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.about-tech-tag {
+    display: inline-flex;
+    padding: 0.32rem 0.65rem;
+    border: 1px solid rgba(128, 128, 128, 0.20);
+    border-radius: 7px;
+    background: rgba(128, 128, 128, 0.055);
+    font-size: 0.77rem;
+    line-height: 1.4;
+    opacity: 0.88;
+}
+
+.about-architecture-row {
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.16);
+}
+
+.about-architecture-row:last-child {
+    border-bottom: 0;
+}
+
+.about-architecture-dot {
+    width: 9px;
+    height: 9px;
+    margin-top: 0.4rem;
+    border-radius: 50%;
+    background: #8174f5;
+    box-shadow: 0 0 0 4px rgba(129, 116, 245, 0.12);
+}
+
+.about-interface {
+    min-height: 175px;
+}
+
+.about-interface > span {
+    display: inline-block;
+    margin-bottom: 1.2rem;
+    color: #8174f5;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.about-principle {
+    min-height: 115px;
+}
+
+.about-footer {
+    margin: 3rem 0 1rem;
+    padding: 2.4rem 1.5rem;
+    border: 1px solid rgba(129, 116, 245, 0.20);
+    border-radius: 18px;
+    background: rgba(129, 116, 245, 0.065);
+    text-align: center;
+}
+
+.about-footer h2 {
+    margin: 0 0 0.55rem;
+    font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+    letter-spacing: -0.025em;
+}
+
+.about-footer p {
+    margin: 0 0 1.2rem;
+    opacity: 0.68;
+    font-size: 0.84rem;
+}
+
+.about-footer span {
+    color: #8174f5;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+@media (max-width: 760px) {
+    .about-hero {
+        padding: 1.6rem;
+        margin-bottom: 2.2rem;
+    }
+
+    .about-tech-row {
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+    }
+
+    .about-rag-step {
+        min-height: auto;
+    }
+}

@@ -53,7 +53,7 @@
       "id": "docker-compose",
       "title": "Create root docker-compose.yml with networking, healthchecks, and volumes",
       "description": "Create docker-compose.yml defining backend and frontend services, shared network, healthcheck, depends_on, AI_VIDEO_API_URL=http://backend:8000/api/v1, env_file, and persistent volumes for downloads, data, and vector_db.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "e2e-docker-verify",

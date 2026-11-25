@@ -27,7 +27,7 @@ def summarize_chunk(chunk: str, llm) -> str:
     prompt = ChatPromptTemplate.from_messages([
         (
             "system",
-            """Summarize this meeting transcript portion concisely.
+            """Summarize this video transcript portion concisely.
             Preserve key discussions, decisions, action items, owners,
             deadlines, and important numbers.
             Do not invent or guess information."""
@@ -50,10 +50,10 @@ def combine_summaries(summaries: list[str], llm) -> str:
         (
             "system",
             """Combine the partial summaries into one professional
-            meeting summary.
+            video summary.
 
             Use appropriate headings and bullet points.
-            Include the meeting overview, key discussions, decisions,
+            Include the video overview, key discussions, decisions,
             action items with owners, deadlines, and next steps.
             Remove repetition without losing important details.
             Never invent information. Omit unsupported categories."""
@@ -69,7 +69,7 @@ def combine_summaries(summaries: list[str], llm) -> str:
 # ---------------------------------------------------------------------------------------------------------------------------------
 
 def summarize_transcript(transcript: str, llm) -> str:
-    """Generate a meeting summary using map-reduce."""
+    """Generate a video summary using map-reduce."""
     transcript = SummarizeRequest(transcript=transcript).transcript
 
     chunks = split_transcript(transcript)
@@ -80,23 +80,23 @@ def summarize_transcript(transcript: str, llm) -> str:
         print(f"Summarizing chunk {i}/{len(chunks)}...")
         summaries.append(summarize_chunk(chunk, llm))
 
-    print("Generating final meeting summary...")
+    print("Generating final video summary...")
 
     return combine_summaries(summaries, llm)
 
 
-# Generate Meeting Title
+# Generate Video Title
 # ---------------------------------------------------------------------------------------------------------------------------------
 
 def generate_title(transcript: str, llm) -> str:
-    """Generate a professional meeting title of at most eight words."""
+    """Generate a professional video title of at most eight words."""
     transcript = SummarizeRequest(transcript=transcript).transcript
 
     title_prompt = ChatPromptTemplate.from_messages([
         (
             "system",
             """
-            Generate a short, professional title for this meeting.
+            Generate a short, professional title for this video..
             Requirements:
             - Maximum 8 words
             - Reflect the main topic

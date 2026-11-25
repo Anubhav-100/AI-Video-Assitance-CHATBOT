@@ -1,0 +1,53 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ai-video-assistant-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - PORT=8000
+      - CHROMA_PERSIST_DIR=/app/vector_db
+      - HISTORY_DB_PATH=/app/data/history.db
+    volumes:
+      - ./backend/downloads:/app/downloads
+      - ./backend/data:/app/data
+      - ./backend/vector_db:/app/vector_db
+    networks:
+      - ai-video-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ai-video-assistant-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - AI_VIDEO_API_URL=http://backend:8000/api/v1
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - ai-video-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+
+networks:
+  ai-video-network:
+    driver: bridge

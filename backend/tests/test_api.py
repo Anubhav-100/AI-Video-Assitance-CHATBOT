@@ -7,8 +7,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from api.app import app
-from api.deps import rag_sessions
+from backend.api.app import app
+from backend.api.deps import rag_sessions
 
 
 @pytest.fixture(autouse=True)
