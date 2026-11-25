@@ -35,7 +35,7 @@
       "id": "docs-and-e2e-verify",
       "title": "Update README and verify FastAPI + Streamlit restart persistence",
       "description": "Document database architecture, location, dependencies, and new endpoints in README.md, and verify FastAPI + Streamlit persistence across restarts.",
-      "passes": false
+      "passes": true
     }
   ]
 }
