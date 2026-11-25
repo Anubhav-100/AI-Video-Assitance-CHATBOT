@@ -1,0 +1,15 @@
+/* Dashboard page only — loaded by ui/dashboard_page.py */
+
+.dashboard-section-gap {
+    height: 10px;
+}
+
+.dashboard-suggestions-label {
+    font-weight: 700;
+    margin: 12px 0 5px;
+}
+
+.dashboard-suggestions-empty {
+    text-align: center;
+    margin: 10px 0 14px;
+}

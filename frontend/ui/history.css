@@ -1,0 +1,24 @@
+/* History page only — loaded by ui/history_page.py */
+
+.history-header-subtitle {
+    opacity: 0.78;
+    margin-bottom: 1rem;
+}
+
+.history-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+.history-card-meta {
+    font-size: 0.82rem;
+    opacity: 0.72;
+    margin-bottom: 0.55rem;
+}
+
+.history-summary-preview {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin-bottom: 0.75rem;
+}
