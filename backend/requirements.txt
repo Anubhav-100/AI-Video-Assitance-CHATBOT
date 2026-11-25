@@ -1,0 +1,45 @@
+# Python 3.10+ recommended (Python>=3.11.9)
+
+# Web Framework & ASGI Server
+fastapi
+uvicorn
+
+# Data Validation & Schemas
+pydantic>=2.0.0
+sqlalchemy>=2.0.0
+
+# YouTube / Audio Processing
+yt-dlp
+pydub
+
+# Speech-to-Text (Whisper & Cloud STT)
+openai-whisper
+torch
+torchaudio
+
+# Translation & Language Models
+transformers
+sentencepiece
+accelerate
+
+# LangChain Ecosystem & LLM Providers
+langchain
+langchain-core
+langchain-community
+langchain-text-splitters
+langchain-mistralai
+langchain-groq
+langchain-openai
+
+# RAG: Vector Store & Embeddings
+chromadb
+langchain-chroma
+sentence-transformers
+langchain-huggingface
+
+# Environment & Network
+python-dotenv
+requests
+
+# Export
+reportlab

@@ -36,6 +36,30 @@
       "title": "Update README and verify FastAPI + Streamlit restart persistence",
       "description": "Document database architecture, location, dependencies, and new endpoints in README.md, and verify FastAPI + Streamlit persistence across restarts.",
       "passes": true
+    },
+    {
+      "id": "backend-docker",
+      "title": "Create backend Dockerfile, .dockerignore, and fix requirements.txt",
+      "description": "Fix invalid/missing entries in backend/requirements.txt, create backend/.dockerignore and backend/Dockerfile using Python 3.11, ffmpeg, and Uvicorn on 0.0.0.0:${PORT:-8000}, and verify image build.",
+      "passes": true
+    },
+    {
+      "id": "frontend-docker",
+      "title": "Create frontend Dockerfile and .dockerignore",
+      "description": "Create frontend/.dockerignore and frontend/Dockerfile using Python 3.11, frontend/requirements.txt, and Streamlit on 0.0.0.0:8501, and verify image build.",
+      "passes": false
+    },
+    {
+      "id": "docker-compose",
+      "title": "Create root docker-compose.yml with networking, healthchecks, and volumes",
+      "description": "Create docker-compose.yml defining backend and frontend services, shared network, healthcheck, depends_on, AI_VIDEO_API_URL=http://backend:8000/api/v1, env_file, and persistent volumes for downloads, data, and vector_db.",
+      "passes": false
+    },
+    {
+      "id": "e2e-docker-verify",
+      "title": "Build, start, and verify full Docker Compose stack",
+      "description": "Run docker compose up -d --build, verify backend health and /docs, frontend on 8501, frontend-to-backend API communication, container logs, env vars, and persistent storage.",
+      "passes": false
     }
   ]
 }
