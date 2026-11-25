@@ -17,7 +17,7 @@
       "id": "rag-persistence",
       "title": "RAG persistence across FastAPI restarts",
       "description": "Ensure ChromaDB path is consistent, detect existing session vectors in ChromaDB, and reconstruct RAG chains via load_rag_chain without unnecessary re-embedding when rag_sessions is empty after restart.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "frontend-history",
