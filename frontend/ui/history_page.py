@@ -101,6 +101,8 @@ def render_history_page() -> None:
                         }
                         st.session_state.session_id = detail.get("session_id")
                         st.session_state.chat_history = []
+                        if detail.get("id") is not None:
+                            st.query_params["analysis_id"] = str(detail["id"])
                         st.session_state.pending_navigation = "Dashboard"
                         st.rerun()
                     except Exception as exc:
@@ -109,6 +111,8 @@ def render_history_page() -> None:
                 if st.button("Delete", key=f"delete_history_{analysis_id}"):
                     try:
                         delete_analysis_history(analysis_id)
+                        if st.query_params.get("analysis_id") == str(analysis_id):
+                            st.query_params.pop("analysis_id", None)
                         st.toast("Analysis deleted.", icon="🗑️")
                         st.rerun()
                     except Exception as exc:

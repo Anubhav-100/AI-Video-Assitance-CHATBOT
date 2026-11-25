@@ -95,6 +95,16 @@ def execute_analysis(source: str, engine: str, uploaded_file: Optional[Any] = No
             st.session_state.session_id = session_id
             st.session_state.chat_history = []
 
+            try:
+                from api_client import list_analysis_history
+
+                recent = list_analysis_history(limit=5)
+                match = next((item for item in recent if item.get("session_id") == session_id), None)
+                if match and match.get("id") is not None:
+                    st.query_params["analysis_id"] = str(match["id"])
+            except Exception:
+                pass
+
             status.update(label="Analysis completed successfully", state="complete", expanded=False)
 
         st.toast("Your video analysis is ready.", icon="✅")

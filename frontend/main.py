@@ -35,6 +35,7 @@ def init_state() -> None:
         "dark_mode": True,
         "navigation": "Dashboard",
         "pending_navigation": None,
+        "auto_restore_attempted": False,
         "url_input": "",
         "media_upload": None,
     }
@@ -43,12 +44,62 @@ def init_state() -> None:
         if key not in st.session_state:
             st.session_state[key] = value
 
+    if st.session_state.analysis_results is None and not st.session_state.auto_restore_attempted:
+        auto_restore_current_analysis()
+
+
+def auto_restore_current_analysis() -> None:
+    """Restore the active analysis from query params or latest SQLite history on page refresh."""
+    st.session_state.auto_restore_attempted = True
+    try:
+        import importlib
+        import api_client
+
+        if not hasattr(api_client, "list_analysis_history"):
+            importlib.reload(api_client)
+
+        raw_id = st.query_params.get("analysis_id")
+        detail = None
+        if raw_id and str(raw_id).isdigit():
+            try:
+                detail = api_client.get_analysis_history(int(raw_id))
+            except Exception:
+                st.query_params.pop("analysis_id", None)
+                detail = None
+
+        if detail is None:
+            items = api_client.list_analysis_history(limit=1)
+            if items:
+                detail = api_client.get_analysis_history(items[0]["id"])
+
+        if detail:
+            st.session_state.analysis_results = {
+                "title": detail.get("title", ""),
+                "transcript": detail.get("transcript", ""),
+                "summary": detail.get("summary", ""),
+                "action_items": detail.get("action_items", ""),
+                "key_decisions": detail.get("key_decisions", ""),
+                "open_questions": detail.get("open_questions", ""),
+                "video_id": detail.get("video_id"),
+                "source": detail.get("source", ""),
+                "engine": detail.get("engine", ""),
+            }
+            st.session_state.session_id = detail.get("session_id")
+            st.session_state.chat_history = []
+            if detail.get("id") is not None:
+                st.query_params["analysis_id"] = str(detail["id"])
+    except Exception:
+        # Backend may be offline on initial load; render empty dashboard gracefully.
+        pass
+
 
 def reset_current_analysis(clear_inputs: bool = False) -> None:
     """Reset analysis-related session state."""
     st.session_state.analysis_results = None
     st.session_state.session_id = None
     st.session_state.chat_history = []
+    st.session_state.auto_restore_attempted = True
+    st.query_params.pop("analysis_id", None)
 
     if clear_inputs:
         st.session_state.url_input = ""
